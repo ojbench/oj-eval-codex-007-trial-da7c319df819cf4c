@@ -9,9 +9,7 @@
 #define _program_h
 
 #include <string>
-#include <vector>
-#include <set>
-#include <unordered_map>
+#include <map>
 #include "statement.hpp"
 
 
@@ -145,8 +143,13 @@ public:
 
 private:
 
-    // Fill this in with whatever types and instance variables you need
-    //todo
+    struct Line {
+        std::string source;
+        Statement *statement;
+        Line() : statement(NULL) {}
+    };
+
+    std::map<int, Line> lines;
 };
 
 #endif

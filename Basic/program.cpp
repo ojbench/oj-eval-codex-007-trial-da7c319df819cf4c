@@ -10,55 +10,54 @@
 
 #include "program.hpp"
 
-
-
 Program::Program() = default;
-
-Program::~Program() = default;
+Program::~Program() { clear(); }
 
 void Program::clear() {
-    // Replace this stub with your own code
-    //todo
+    for (auto &entry : lines) delete entry.second.statement;
+    lines.clear();
 }
 
 void Program::addSourceLine(int lineNumber, const std::string &line) {
-    // Replace this stub with your own code
-    //todo
+    auto &entry = lines[lineNumber];
+    delete entry.statement;
+    entry.statement = NULL;
+    entry.source = line;
 }
 
 void Program::removeSourceLine(int lineNumber) {
-    // Replace this stub with your own code
-    //todo
+    auto it = lines.find(lineNumber);
+    if (it == lines.end()) return;
+    delete it->second.statement;
+    lines.erase(it);
 }
 
 std::string Program::getSourceLine(int lineNumber) {
-    // Replace this stub with your own code
-    //todo
+    auto it = lines.find(lineNumber);
+    if (it == lines.end()) return "";
+    return it->second.source;
 }
 
 void Program::setParsedStatement(int lineNumber, Statement *stmt) {
-    // Replace this stub with your own code
-    //todo
+    auto it = lines.find(lineNumber);
+    if (it == lines.end()) error("setParsedStatement: No such line number");
+    delete it->second.statement;
+    it->second.statement = stmt;
 }
 
-//void Program::removeSourceLine(int lineNumber) {
-
 Statement *Program::getParsedStatement(int lineNumber) {
-   // Replace this stub with your own code
-   //todo
+    auto it = lines.find(lineNumber);
+    if (it == lines.end()) return NULL;
+    return it->second.statement;
 }
 
 int Program::getFirstLineNumber() {
-    // Replace this stub with your own code
-    //todo
+    if (lines.empty()) return -1;
+    return lines.begin()->first;
 }
 
 int Program::getNextLineNumber(int lineNumber) {
-    // Replace this stub with your own code
-    //todo
+    auto it = lines.upper_bound(lineNumber);
+    if (it == lines.end()) return -1;
+    return it->first;
 }
-
-//more func to add
-//todo
-
-
